@@ -1,7 +1,7 @@
 <template>
     <b-overlay :show="loading" rounded="sm">
         <b-card :header="chat.fullName">
-            <div class="messages-box" v-if="chat"> 
+            <div class="messages-box" v-if="chat" ref="messagesBox"> 
                 <ul class="mb-0">
                     <li
                         :class="{
@@ -18,23 +18,18 @@
             <div class="no-messages" v-else>Сообщений пока нет...</div>
         </b-card>
 
-        <b-input-group class="mt-3">
-            <b-form-input
-                @keyup.enter="sendMessage"
-                v-model="message">
-            </b-form-input>
-
-            <b-input-group-append>
-                <b-button variant="info" @click="sendMessage">Отправить</b-button>
-            </b-input-group-append>
-        </b-input-group>
+        <message-input @send="sendMessage"></message-input>
     </b-overlay>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import MessageInput from './MessageInput'
 
 export default {
+    components: {
+        MessageInput
+    },
     computed: {
         ...mapState('chat', [ 'currentChat', 'loading' ]),
         ...mapState('auth', [ 'user' ]),
@@ -48,25 +43,24 @@ export default {
             }
         }
     },
-    data() {
-        return {
-            message: ''
-        }
-    },
     methods: {
-        sendMessage() {
-            console.log({
-                roomId: this.currentChat._id,
-                body: this.message,
-                userId: this.user.id
-            })
-
+        sendMessage(message) {
             this.$store.dispatch('chat/sendMessage', {
                 roomId: this.currentChat._id,
-                body: this.message,
+                body: message,
                 userId: this.user.id
+            })
+            .then(data => {
+                this.$socket.emit('sendMessage', data);
             });
+        },
+        scrollToBottom() {
+            const messagesBox = this.$refs.messagesBox;
+            messagesBox.scrollTop = messagesBox.scrollHeight;
         }
+    },
+    updated() {
+        this.scrollToBottom();
     }
 }
 </script>

@@ -6,7 +6,8 @@ const chatModule = {
     namespaced: true,
     state: {
         currentChat: {},
-        loading: false
+        loading: false,
+        rooms: []
     },
 
     getters,

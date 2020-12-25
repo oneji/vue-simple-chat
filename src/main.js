@@ -16,6 +16,11 @@ Vue.use(IconsPlugin)
 Vue.use(new VueSocketIO({
     debug: true,
     connection: io(config.chatURL),
+    vuex: {
+        store,
+        actionPrefix: 'SOCKET_',
+        mutationPrefix: 'SOCKET_'
+    },
 }))
 
 Vue.config.productionTip = false

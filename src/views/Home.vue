@@ -36,16 +36,11 @@ export default {
     computed: {
         ...mapState('auth', [ 'user' ]),
         ...mapState([ 'contentLoading' ]),
-    },
-    sockets: {
-        chat(data) {
-            console.log('socket', data);
-        }
+        ...mapState('chat', [ 'rooms' ])
     },
     data() {
         return {
             users: [],
-            rooms: []
         }
     },
     methods: {
@@ -67,13 +62,13 @@ export default {
                 this.users = data.data;
             })
             .catch(error => console.log(error))
-        
-        axios.get('rooms')
-            .then(({ data }) => {
-                this.rooms = data.data;
-                console.log('[Home.vue] rooms: ', this.rooms)
-            })
-            .catch(error => console.log(error))
+
+        this.$store.dispatch('chat/getRooms')
+            .then(() => {
+                this.$socket.emit('joinRoom', {
+                    rooms: this.rooms.map(room => room._id)
+                });
+            });
     }
 }
 </script>
