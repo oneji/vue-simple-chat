@@ -23,8 +23,8 @@ export default {
         UsersListItem
     },
     methods: {
-        startChat(user) {
-            this.$emit('start-chat', user);
+        startChat(userId) {
+            this.$emit('start-chat', userId);
         }
     }
 }

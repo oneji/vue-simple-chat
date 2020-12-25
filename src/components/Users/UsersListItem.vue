@@ -17,7 +17,7 @@ export default {
     },
     methods: {
         startChat() {
-            this.$emit('start-chat', this.item);
+            this.$emit('start-chat', this.item._id);
         }
     }
 }

@@ -18,6 +18,7 @@ export default {
                 { login: 'test@gmail.com', password: '12345678', role: 'Клиент' }, 
                 { login: 'driver@gmail.com', password: '501222150', role: 'Водитель' }, 
                 { login: 'client@gmail.com', password: '12345678', role: 'Клиент' }, 
+                { login: 'client2@gmail.com', password: '12345678', role: 'Клиент' }, 
             ]
         }
     },

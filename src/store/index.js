@@ -9,13 +9,15 @@ import mutations from './mutations'
 
 // Modules
 import authModule from './modules/auth'
+import chatModule from './modules/chat'
 
 export default new Vuex.Store({
     state: {
         contentLoading: false
     },
     modules: {
-        auth: authModule
+        auth: authModule,
+        chat: chatModule
     },
 
     getters,
