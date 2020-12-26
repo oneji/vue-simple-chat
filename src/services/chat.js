@@ -15,3 +15,7 @@ export function getRoomById(id) {
 export function sendMessage(data) {
     return axios.post(`rooms/sendMessage`, data);
 }
+
+export function markMessageAsRead(messageId) {
+    return axios.post('messages/markAsRead', { id: messageId });
+}

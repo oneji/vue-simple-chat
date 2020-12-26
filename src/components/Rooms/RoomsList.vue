@@ -8,7 +8,9 @@
             class="message-wrapper"
         >
             <rooms-list-item :item="room"></rooms-list-item>
-            <b-badge variant="success" pill>{{ room.messages.filter(message => message.user.uid !== currentUser.id && !message.seenAt).length }}</b-badge>
+            <b-badge variant="success" pill v-if="room.messages.filter(message => message.user.uid !== currentUser.id && !message.seenAt).length > 0">
+                {{ room.messages.filter(message => message.user.uid !== currentUser.id && !message.seenAt).length }}
+            </b-badge>
         </b-list-group-item>
     </b-list-group>
 </template>

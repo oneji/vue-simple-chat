@@ -4,6 +4,7 @@ import {
     getRooms,
     getRoomById,
     sendMessage,
+    markMessageAsRead
 } from '@/services/chat'
 
 export default {
@@ -18,8 +19,6 @@ export default {
     },
 
     async getRooms({ commit, rootState }) {
-        commit(mutationTypes.SET_LOADING, true);
-
         try {
             let userId = rootState.auth.user.id;
             let { data } = await getRooms(userId);
@@ -66,5 +65,15 @@ export default {
 
     'SOCKET_newMessage' ({ commit }, message) {
         commit(mutationTypes.PUSH_NEW_MESSAGE, message);
+    },
+
+    async markMessageAsRead({ commit }, messageId) {
+        try {
+            let { data } = await markMessageAsRead(messageId);
+
+            commit(mutationTypes.MARK_MESSAGE_AS_READ, data.data);
+        } catch (error) {
+            
+        }
     }
 }

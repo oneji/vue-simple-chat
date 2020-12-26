@@ -5,11 +5,7 @@
                 <h6 class="mb-0">
                     {{ chat.fullName }}
 
-                    <div class="container-dot" v-if="typing">
-                        <span class="dot"></span>
-                        <span class="dot"></span>
-                        <span class="dot"></span>
-                    </div>
+                    <user-typing-icon v-if="typing"></user-typing-icon>
                 </h6>
             </template>
             <div class="messages-box" v-if="chat" ref="messagesBox"> 
@@ -25,6 +21,7 @@
         </b-card>
 
         <message-input
+            v-if="currentChat._id"
             @send="sendMessage">
         </message-input>
     </b-overlay>
@@ -34,11 +31,13 @@
 import { mapState } from 'vuex'
 import ChatBoxItem from './ChatBoxItem'
 import MessageInput from './MessageInput'
+import UserTypingIcon from '../UserTypingIcon'
 
 export default {
     components: {
         ChatBoxItem,
-        MessageInput
+        MessageInput,
+        UserTypingIcon
     },
     computed: {
         ...mapState('chat', [ 'currentChat', 'loading' ]),
@@ -55,7 +54,10 @@ export default {
     },
     sockets: {
         userTyping(data) {
-            this.typing = true;
+            console.log('userTyping', data)
+            if(this.currentChat._id === data.room) {
+                this.typing = true;
+            }
         },
         stoppedTyping(data) {
             this.typing = false;
@@ -90,8 +92,9 @@ export default {
                 
                 this.observer.unobserve(target);
                 
-                const i = target.getAttribute('data-id');
-                console.log(i)
+                const id = target.getAttribute('data-id');
+
+                this.$store.dispatch('chat/markMessageAsRead', id);
             });
         }
     },
@@ -163,39 +166,5 @@ export default {
         margin-bottom: 10px;
         color: #b7b3b3;
         font-size: 12px;
-    }
-
-    .container-dot {
-        margin: 0 5px;
-        display: inline-block;
-    }
-
-    .dot {
-        height: 10px;
-        width: 10px;
-        border-radius: 100%;
-        display: inline-block;
-        background-color: #B4B5B9;
-        animation: 1.2s typing-dot ease-in-out infinite;
-        margin-right: 5px;
-    }
-
-    .dot:nth-of-type(2) {
-        animation-delay: 0.15s;
-    }
-
-    .dot:nth-of-type(3) {
-        animation-delay: 0.25s;
-    }
-
-    @keyframes typing-dot {
-        15% {
-            transform: translateY(-35%);
-            opacity: 0.5;
-        }
-        30% {
-            transform: translateY(0%);
-            opacity: 1;
-        }
     }
 </style>

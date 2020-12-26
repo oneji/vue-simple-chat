@@ -31,5 +31,13 @@ export default {
 
     [mutationTypes.PUSH_ROOM] (state, room) {
         state.rooms.push(room);
+    },
+
+    [mutationTypes.MARK_MESSAGE_AS_READ] (state, message) {
+        state.rooms.map(room => {
+            room.messages.map(m => {
+                if(m._id === message._id) m.seenAt = message.seenAt;
+            })
+        });
     }
 }
