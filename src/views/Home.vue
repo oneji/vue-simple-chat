@@ -1,14 +1,19 @@
 <template>
     <div class="home" v-if="!contentLoading">
-        <users-list
+        <!-- <users-list
             :items="users"
             @start-chat="startChat">
-        </users-list>
+        </users-list> -->
 
         <b-row>
             <b-col md="4">
                 <h5>Чаты:</h5>
-                <rooms-list :items="rooms"></rooms-list>
+                <rooms-list
+                    :items="rooms"
+                    v-if="rooms.length > 0">
+                </rooms-list>
+
+                <rooms-list-skeleton :loading="rooms.length === 0"></rooms-list-skeleton>
             </b-col>
 
             <b-col md="8">
@@ -20,17 +25,19 @@
 
 <script>
 import axios from '@/axios';
-import config from '../config'
+import config from '../config';
 import { mapState } from 'vuex';
 import UsersList from '@/components/Users/UsersList';
-import RoomsList from '@/components/Rooms/RoomsList'
-import ChatBox from '@/components/Chat/ChatBox'
+import RoomsList from '@/components/Rooms/RoomsList';
+import ChatBox from '@/components/Chat/ChatBox';
+import RoomsListSkeleton from '@/components/Rooms/RoomsListSkeleton';
 
 export default {
     name: 'Home',
     components: {
         UsersList,
         RoomsList,
+        RoomsListSkeleton,
         ChatBox
     },
     computed: {
