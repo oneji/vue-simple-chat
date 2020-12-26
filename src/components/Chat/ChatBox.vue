@@ -93,8 +93,12 @@ export default {
                 this.observer.unobserve(target);
                 
                 const id = target.getAttribute('data-id');
+                const type = target.getAttribute('data-type');
 
-                this.$store.dispatch('chat/markMessageAsRead', id);
+                if(type === 'in') {
+                    this.$store.dispatch('chat/markMessageAsRead', id);
+                }
+
             });
         }
     },

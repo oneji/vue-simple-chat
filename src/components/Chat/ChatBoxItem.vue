@@ -1,6 +1,7 @@
 <template>
     <li
         :data-id="item._id"
+        :data-type="item.user.uid !== user.id ? 'in' : 'out'"
         :class="{
             'message-in': item.user.uid !== user.id,
             'message-out': item.user.uid === user.id 

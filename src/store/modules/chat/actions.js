@@ -73,7 +73,7 @@ export default {
 
             commit(mutationTypes.MARK_MESSAGE_AS_READ, data.data);
         } catch (error) {
-            
+            console.log(error);
         }
     }
 }

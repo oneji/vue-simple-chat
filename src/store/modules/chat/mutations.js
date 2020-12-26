@@ -21,6 +21,7 @@ export default {
         state.rooms.map(room => {
             if(room._id === message.room) {
                 room.messages.push(message);
+                room.unreadMessages++;
             }
         })
 
@@ -38,6 +39,8 @@ export default {
             room.messages.map(m => {
                 if(m._id === message._id) m.seenAt = message.seenAt;
             })
+
+            room.unreadMessages--;
         });
     }
 }

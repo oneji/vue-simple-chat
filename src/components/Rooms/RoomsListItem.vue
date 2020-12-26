@@ -21,14 +21,13 @@
         </template>
 
         <h6 class="mt-0 mb-0">{{ filteredRoomUser.fullName }}</h6>
-        <p class="mb-0" style="font-size: 12px">{{ lastMessage }}</p>
+        <p class="mb-0" style="font-size: 12px">{{ item.lastMessage.body }}</p>
     </b-media>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import config from '@/config'
-import _ from 'lodash'
 
 export default {
     props: {
@@ -40,11 +39,6 @@ export default {
         ...mapState('auth', {
             currentUser: 'user'
         }),
-        lastMessage() {
-            const last = _.last(this.item.messages);
-
-            return last ? last.body : null;
-        },
         storageURL() {
             return config.storageURL;
         },
