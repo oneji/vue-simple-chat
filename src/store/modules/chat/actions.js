@@ -23,8 +23,6 @@ export default {
             let userId = rootState.auth.user.id;
             let { data } = await getRooms(userId);
 
-            console.log(data)
-
             commit(mutationTypes.SET_ROOMS, data.data);
         } catch (error) {
             console.log(error)
@@ -36,8 +34,6 @@ export default {
 
         try {
             let { data } = await getRoomById(roomId);
-
-            console.log(data);
 
             commit(mutationTypes.SET_CHAT, {
                 messages: data.messages,

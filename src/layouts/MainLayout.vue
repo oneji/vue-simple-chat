@@ -2,7 +2,7 @@
     <div>
         <the-nav-bar></the-nav-bar>
         
-        <b-container>
+        <b-container class="pt-4">
             <router-view />
         </b-container>
     </div>

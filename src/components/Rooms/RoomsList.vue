@@ -6,6 +6,7 @@
             :key="room._id"
             @click="openChat(room._id)"
             class="message-wrapper"
+            :active="currentChat._id === room._id"
         >
             <rooms-list-item :item="room"></rooms-list-item>
             <b-badge variant="success" pill v-if="room.unreadMessages > 0">
@@ -31,11 +32,14 @@ export default {
     computed: {
         ...mapState('auth', {
             currentUser: 'user'
-        })
+        }),
+        ...mapState('chat', ['currentChat'])
     },
     methods: {
         openChat(roomId) {
-            this.$store.dispatch('chat/getChatById', roomId);
+            if(this.currentChat._id !== roomId) {
+                this.$store.dispatch('chat/getChatById', roomId);
+            }
         }
     }
 }

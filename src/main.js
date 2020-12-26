@@ -14,7 +14,7 @@ Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 
 Vue.use(new VueSocketIO({
-    debug: true,
+    debug: false,
     connection: io(config.chatURL),
     vuex: {
         store,

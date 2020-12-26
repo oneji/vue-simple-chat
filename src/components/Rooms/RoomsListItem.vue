@@ -2,26 +2,16 @@
     <b-media>
         <template #aside>
             <b-img
-                v-if="filteredRoomUser.photo"
-                :src="`${storageURL}/${filteredRoomUser.photo}`"
+                :src="getUsersPhoto"
                 width="40"
                 height="40"
                 :alt="filteredRoomUser.fullName"
                 rounded="circle">
             </b-img>
-            
-            <b-img
-                v-else
-                blank
-                blank-color="#ccc"
-                width="40"
-                alt="placeholder"
-                rounded="circle">
-            </b-img>
         </template>
 
         <h6 class="mt-0 mb-0">{{ filteredRoomUser.fullName }}</h6>
-        <p class="mb-0" style="font-size: 12px">{{ item.lastMessage.body }}</p>
+        <p class="mb-0" style="font-size: 12px">{{ item.lastMessage }}</p>
     </b-media>
 </template>
 
@@ -44,6 +34,9 @@ export default {
         },
         filteredRoomUser() {
             return this.item.users.filter(user => user.uid !== this.currentUser.id)[0];
+        },
+        getUsersPhoto() {
+            return this.filteredRoomUser.photo ? `${this.storageURL}/${this.filteredRoomUser.photo}` : require('@/assets/images/no-photo.png'); 
         }
     }
 }

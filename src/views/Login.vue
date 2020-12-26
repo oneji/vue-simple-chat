@@ -44,22 +44,16 @@
                     </b-form>
                 </b-card>
             </b-overlay>
-
-            <users-hint @selected="onUserSelected"></users-hint>
         </b-col>
     </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import UsersHint from '../components/UsersHint'
 
 export default {
     computed: {
         ...mapState('auth', [ 'loading', 'errorMessage', 'error' ])
-    },
-    components: {
-        UsersHint
     },
     data() {
         return {
@@ -71,15 +65,6 @@ export default {
         onSubmit(e) {
             e.preventDefault();
             
-            this.$store.dispatch('auth/login', {
-                login: this.login,
-                password: this.password
-            });
-        },
-        onUserSelected(data) {
-            this.login = data.login;
-            this.password = data.password;
-
             this.$store.dispatch('auth/login', {
                 login: this.login,
                 password: this.password
