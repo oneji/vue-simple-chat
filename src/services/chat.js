@@ -1,7 +1,11 @@
 import axios from '@/axios'
 
-export function getRooms() {
-    return axios.get('rooms');
+export function startChat(data) {
+    return axios.post('rooms', data);
+}
+
+export function getRooms(userId) {
+    return axios.get(`rooms?user_id=${userId}`);
 }
 
 export function getRoomById(id) {

@@ -27,5 +27,9 @@ export default {
         if(message.room === state.currentChat._id) {
             state.currentChat.messages.push(message);
         }
+    },
+
+    [mutationTypes.PUSH_ROOM] (state, room) {
+        state.rooms.push(room);
     }
 }

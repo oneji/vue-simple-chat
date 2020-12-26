@@ -45,21 +45,17 @@ export default {
     },
     methods: {
         startChat(userId) {
-            axios.post('rooms', {
+            this.$store.dispatch('chat/startChat', {
                 users: [userId],
                 type: 'private',
                 currentUserId: this.user.id
-            })
-            .then(response => {
-                console.log(response);
-            })
-            .catch(error => console.log(error))
+            });
         }
     },
     mounted() {
         axios.get('users')
             .then(({ data }) => {
-                this.users = data.data;
+                this.users = data.data.filter(user => user.uid !== this.user.id);
             })
             .catch(error => console.log(error))
 

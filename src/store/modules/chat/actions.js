@@ -1,16 +1,30 @@
 import * as mutationTypes from './mutation-types'
 import { 
+    startChat,
     getRooms,
     getRoomById,
-    sendMessage 
+    sendMessage,
 } from '@/services/chat'
 
 export default {
-    async getRooms({ commit }) {
+    async startChat({ commit }, roomData) {
+        try {
+            let { data } = await startChat(roomData);
+
+            commit(mutationTypes.PUSH_ROOM, data.data);
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
+    async getRooms({ commit, rootState }) {
         commit(mutationTypes.SET_LOADING, true);
 
         try {
-            let { data } = await getRooms();
+            let userId = rootState.auth.user.id;
+            let { data } = await getRooms(userId);
+
+            console.log(data)
 
             commit(mutationTypes.SET_ROOMS, data.data);
         } catch (error) {
@@ -45,7 +59,7 @@ export default {
 
                 resolve(data.data);
             } catch (error) {
-                console.log(error);
+                reject(error);
             }
         })
     },
