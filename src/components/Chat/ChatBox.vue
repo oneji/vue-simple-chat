@@ -1,33 +1,43 @@
 <template>
     <b-overlay :show="loading" rounded="sm">
-        <b-card :header="chat.fullName">
+        <b-card header-tag="header">
+            <template #header>
+                <h6 class="mb-0">
+                    {{ chat.fullName }}
+
+                    <div class="container-dot" v-if="typing">
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div>
+                </h6>
+            </template>
             <div class="messages-box" v-if="chat" ref="messagesBox"> 
-                <ul class="mb-0">
-                    <li
-                        :class="{
-                            'message-in': message.user.uid !== user.id,
-                            'message-out': message.user.uid === user.id 
-                        }"
-                        v-for="message in currentChat.messages" :key="message._id">
-                        <span class="message-body">{{ message.body }}</span>
-                        <br>
-                        <span class="message-time">20:00</span>    
-                    </li>
+                <ul class="mb-0" ref="messagesInnerBox">
+                    <chat-box-item
+                        v-for="message in currentChat.messages" :key="message._id"
+                        :item="message"
+                        :observer="observer">
+                    </chat-box-item>
                 </ul>
             </div>
             <div class="no-messages" v-else>Сообщений пока нет...</div>
         </b-card>
 
-        <message-input @send="sendMessage"></message-input>
+        <message-input
+            @send="sendMessage">
+        </message-input>
     </b-overlay>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import ChatBoxItem from './ChatBoxItem'
 import MessageInput from './MessageInput'
 
 export default {
     components: {
+        ChatBoxItem,
         MessageInput
     },
     computed: {
@@ -41,6 +51,20 @@ export default {
             return {
                 fullName: ''
             }
+        }
+    },
+    sockets: {
+        userTyping(data) {
+            this.typing = true;
+        },
+        stoppedTyping(data) {
+            this.typing = false;
+        }
+    },
+    data() {
+        return {
+            observer: null,
+            typing: false
         }
     },
     methods: {
@@ -57,11 +81,35 @@ export default {
         scrollToBottom() {
             const messagesBox = this.$refs.messagesBox;
             messagesBox.scrollTop = messagesBox.scrollHeight;
+        },
+        onElementObserved(entries) {
+            entries.forEach(({ target, isIntersecting}) => {
+                if (!isIntersecting) {
+                    return;
+                }
+                
+                this.observer.unobserve(target);
+                
+                const i = target.getAttribute('data-id');
+                console.log(i)
+            });
         }
     },
     updated() {
         this.scrollToBottom();
-    }
+    },
+    created() {
+        this.observer = new IntersectionObserver(
+            this.onElementObserved, 
+            {
+                root: this.$refs.messagesInnerBox,
+                threshold: 1.0,
+            }
+        );
+    },
+    beforeDestroy() {
+        this.observer.disconnect();
+    },
 }
 </script>
 
@@ -115,5 +163,39 @@ export default {
         margin-bottom: 10px;
         color: #b7b3b3;
         font-size: 12px;
+    }
+
+    .container-dot {
+        margin: 0 5px;
+        display: inline-block;
+    }
+
+    .dot {
+        height: 10px;
+        width: 10px;
+        border-radius: 100%;
+        display: inline-block;
+        background-color: #B4B5B9;
+        animation: 1.2s typing-dot ease-in-out infinite;
+        margin-right: 5px;
+    }
+
+    .dot:nth-of-type(2) {
+        animation-delay: 0.15s;
+    }
+
+    .dot:nth-of-type(3) {
+        animation-delay: 0.25s;
+    }
+
+    @keyframes typing-dot {
+        15% {
+            transform: translateY(-35%);
+            opacity: 0.5;
+        }
+        30% {
+            transform: translateY(0%);
+            opacity: 1;
+        }
     }
 </style>
