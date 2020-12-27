@@ -94,8 +94,9 @@ export default {
                 
                 const id = target.getAttribute('data-id');
                 const type = target.getAttribute('data-type');
+                const seen = Boolean(target.getAttribute('data-seen'));
 
-                if(type === 'in') {
+                if(type === 'in' && !seen) {
                     this.$store.dispatch('chat/markMessageAsRead', id);
                 }
 
