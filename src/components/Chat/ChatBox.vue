@@ -1,15 +1,16 @@
 <template>
     <b-overlay :show="loading" rounded="sm">
-        <b-card header-tag="header">
-            <template #header>
+        <b-card header-tag="header" style="box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2),0 2px 2px 0 rgba(0, 0, 0, .14),0 1px 5px 0 rgba(0, 0, 0, .12)">
+            <template #header v-if="chat.fullName">
                 <h6 class="mb-0">
                     {{ chat.fullName }}
 
                     <user-typing-icon v-if="typing"></user-typing-icon>
                 </h6>
             </template>
-            <div class="messages-box" v-if="chat" ref="messagesBox"> 
+            <div class="messages-box" v-if="currentChat" ref="messagesBox"> 
                 <ul class="mb-0" ref="messagesInnerBox">
+                    <div class="no-messages" v-if="!currentChat.messages">Выберите чат в левой колонке чтобы начать диалог</div>
                     <chat-box-item
                         v-for="message in currentChat.messages" :key="message._id"
                         :item="message"
@@ -17,7 +18,7 @@
                     </chat-box-item>
                 </ul>
             </div>
-            <div class="no-messages" v-else>Сообщений пока нет...</div>
+            
         </b-card>
 
         <message-input

@@ -1,5 +1,5 @@
 <template>
-    <b-list-group>
+    <b-list-group class="mb-2">
         <b-list-group-item
             href="#"
             v-for="room in items"

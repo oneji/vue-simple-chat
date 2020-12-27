@@ -22,5 +22,7 @@ export default {
 </script>
 
 <style>
-
+    body {
+        background-color: #F7F8FA !important;
+    }
 </style>

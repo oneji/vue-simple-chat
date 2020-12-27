@@ -12,6 +12,8 @@ export default {
         try {
             let { data } = await startChat(roomData);
 
+            console.log(data);
+
             commit(mutationTypes.PUSH_ROOM, data.data);
         } catch (error) {
             console.log(error);

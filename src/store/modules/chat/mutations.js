@@ -32,7 +32,14 @@ export default {
     },
 
     [mutationTypes.PUSH_ROOM] (state, room) {
-        state.rooms.push(room);
+        let exists = false;
+        state.rooms.map(stateRoom => {
+            if(stateRoom._id === room._id) {
+                exists = true;
+            }
+        });
+        
+        if(!exists) state.rooms.push(room);
     },
 
     [mutationTypes.MARK_MESSAGE_AS_READ] (state, message) {
