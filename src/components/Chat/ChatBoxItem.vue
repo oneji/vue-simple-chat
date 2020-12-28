@@ -1,5 +1,5 @@
 <template>
-    <li
+    <div
         :data-id="item._id"
         :data-type="item.user.uid !== user.id ? 'in' : 'out'"
         :data-seen="item.seenAt ? true : false"
@@ -7,10 +7,11 @@
             'message-in': item.user.uid !== user.id,
             'message-out': item.user.uid === user.id 
         }">
-        <span class="message-body">{{ item.body }}</span>
-        <br>
-        <span class="message-time">{{ item.createdAt | moment('H:mm') }}</span>    
-    </li>
+        <span class="message-body">
+            {{ item.body }}
+        </span>
+        <span class="message-time">{{ item.createdAt | moment('H:mm') }}</span>
+    </div>
 </template>
 
 <script>
@@ -37,11 +38,11 @@ export default {
         background-color: #48b0f7;
         color: #fff;
         border-radius: 5px;
+        font-size: 13px;
     }
 
     .message-out .message-time {
-        margin-bottom: 10px;
-        color: #b7b3b3;
+        color: #9e9e9e;
         font-size: 12px;
     }
 
@@ -50,11 +51,11 @@ export default {
         background-color: rgba(85,110,230,.1);
         color: #000;
         border-radius: 5px;
+        font-size: 13px;
     }
 
     .message-in .message-time {
-        margin-bottom: 10px;
-        color: #b7b3b3;
+        color: #9e9e9e;
         font-size: 12px;
     }
 </style>

@@ -9,14 +9,14 @@
                 </h6>
             </template>
             <div class="messages-box" v-if="currentChat" ref="messagesBox"> 
-                <ul class="mb-0" ref="messagesInnerBox">
+                <div ref="messagesInnerBox">
                     <div class="no-messages" v-if="!currentChat.messages">Выберите чат в левой колонке чтобы начать диалог</div>
                     <chat-box-item
                         v-for="message in currentChat.messages" :key="message._id"
                         :item="message"
                         :observer="observer">
                     </chat-box-item>
-                </ul>
+                </div>
             </div>
             
         </b-card>
@@ -140,37 +140,16 @@ export default {
     }
 
     .messages-box .message-out {
-        text-align: right;
-        margin: 10px 0;
-    }
-
-    .messages-box .message-out .message-body {
-        padding: 5px 10px;
-        background-color: #48b0f7;
-        color: #fff;
-        border-radius: 5px;
-    }
-
-    .messages-box .message-out .message-time {
-        margin-bottom: 10px;
-        color: #b7b3b3;
-        font-size: 12px;
+        margin: 5px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
     }
     
     .messages-box .message-in {
-        margin: 10px 0;
-    }
-
-    .messages-box .message-in .message-body {
-        padding: 5px 10px;
-        background-color: rgba(85,110,230,.1);
-        color: #000;
-        border-radius: 5px;
-    }
-
-    .messages-box .message-in .message-time {
-        margin-bottom: 10px;
-        color: #b7b3b3;
-        font-size: 12px;
+        margin: 5px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
     }
 </style>

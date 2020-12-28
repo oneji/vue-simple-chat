@@ -11,6 +11,13 @@ export default {
 
     [mutationTypes.ADD_MESSAGE] (state, message) {
         state.currentChat.messages.push(message);
+
+        state.rooms.map(room => {
+            if(room._id === message.room) {
+                room.messages.push(message);
+                room.lastMessage = message;
+            }
+        })
     },
 
     [mutationTypes.SET_ROOMS] (state, rooms) {
