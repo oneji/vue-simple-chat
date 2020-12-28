@@ -9,7 +9,7 @@
         }">
         <span class="message-body">{{ item.body }}</span>
         <br>
-        <span class="message-time">20:00</span>    
+        <span class="message-time">{{ item.createdAt | moment('H:mm') }}</span>    
     </li>
 </template>
 

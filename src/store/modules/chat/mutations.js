@@ -21,7 +21,7 @@ export default {
         state.rooms.map(room => {
             if(room._id === message.room) {
                 room.messages.push(message);
-                room.lastMessage = message.body;
+                room.lastMessage = message;
                 room.unreadMessages++;
             }
         })

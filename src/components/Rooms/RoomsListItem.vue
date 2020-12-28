@@ -1,5 +1,5 @@
 <template>
-    <b-media>
+    <b-media class="w-100">
         <template #aside>
             <b-img
                 :src="getUsersPhoto"
@@ -10,8 +10,16 @@
             </b-img>
         </template>
 
-        <h6 class="mt-0 mb-0">{{ filteredRoomUser.fullName }}</h6>
-        <p class="mb-0" style="font-size: 12px">{{ item.lastMessage }}</p>
+        <h6 class="mt-0 mb-0">
+            {{ filteredRoomUser.fullName }}
+            <span class="last-message__time">{{ item.lastMessage.createdAt | moment('H:mm') }}</span>
+        </h6>
+        <p class="mb-0" style="font-size: 12px">
+            {{ item.lastMessage.body }}
+            <b-badge variant="success" pill v-if="item.unreadMessages > 0" class="unread-messages-counter">
+                {{ item.unreadMessages }}
+            </b-badge>
+        </p>
     </b-media>
 </template>
 
@@ -42,6 +50,9 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+    .last-message__time, .unread-messages-counter {
+        float: right;
+        font-size: 12px;
+    }
 </style>

@@ -9,9 +9,6 @@
             :active="currentChat._id === room._id"
         >
             <rooms-list-item :item="room"></rooms-list-item>
-            <b-badge variant="success" pill v-if="room.unreadMessages > 0">
-                {{ room.unreadMessages }}
-            </b-badge>
         </b-list-group-item>
     </b-list-group>
 </template>
