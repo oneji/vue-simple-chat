@@ -8,16 +8,19 @@ import {
 } from '@/services/chat'
 
 export default {
-    async startChat({ commit }, roomData) {
-        try {
-            let { data } = await startChat(roomData);
+    startChat({ commit }, roomData) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let { data } = await startChat(roomData);
+    
+                commit(mutationTypes.PUSH_ROOM, data.data);
 
-            console.log(data);
-
-            commit(mutationTypes.PUSH_ROOM, data.data);
-        } catch (error) {
-            console.log(error);
-        }
+                resolve(data.data);
+            } catch (error) {
+                reject(error);
+                console.log(error);
+            }
+        })
     },
 
     async getRooms({ commit, rootState }) {
@@ -67,6 +70,10 @@ export default {
 
     'SOCKET_userChangeStatus' ({ commit }, data) {
         commit(mutationTypes.USER_CHANGE_STATUS, data);
+    },
+
+    'SOCKET_newRoom' ({ commit }, room) {
+        commit(mutationTypes.PUSH_ROOM, room);
     },
 
     async markMessageAsRead({ commit }, messageId) {

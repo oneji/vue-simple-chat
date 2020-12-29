@@ -1,4 +1,5 @@
 import * as mutationTypes from './mutation-types'
+import socket from '@/config/socket'
 
 export default {
     [mutationTypes.SET_LOADING] (state, flag) {
@@ -46,7 +47,12 @@ export default {
             }
         });
         
-        if(!exists) state.rooms.push(room);
+        if(!exists) {
+            state.rooms.push(room)
+            socket.emit('joinRoom', {
+                rooms: [room._id]
+            });
+        };
     },
 
     [mutationTypes.MARK_MESSAGE_AS_READ] (state, message) {

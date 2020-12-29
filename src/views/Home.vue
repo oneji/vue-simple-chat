@@ -69,6 +69,10 @@ export default {
                 user: userId,
                 type: 'private',
                 currentUserId: this.user.id
+            }).then((room) => {
+                this.$socket.emit('joinRoom', {
+                    rooms: [room._id]
+                });
             });
         }
     },

@@ -11,7 +11,7 @@
         </template>
 
         <h6 class="mt-0 mb-0">{{ item.fullName }}</h6>
-        <p class="mb-0" style="font-size: 12px">Онлайн</p>
+        <p class="mb-0" style="font-size: 12px">{{ item.status | formatUserStatus }}</p>
     </b-media>
 </template>
 
@@ -22,6 +22,12 @@ export default {
     props: {
         item: {
             type: Object
+        }
+    },
+    filters: {
+        formatUserStatus(value) {
+            if(value === 'online') return 'Онлайн';
+            else return 'Оффлайн';
         }
     },
     computed: {
