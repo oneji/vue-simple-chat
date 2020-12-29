@@ -1,20 +1,25 @@
 <template>
     <div class="container-dot">
-        <span class="dot"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
+        <span class="dot" :style="`height: ${size}px; width: ${size}px;`"></span>
+        <span class="dot" :style="`height: ${size}px; width: ${size}px;`"></span>
+        <span class="dot" :style="`height: ${size}px; width: ${size}px;`"></span>
     </div>
 </template>
 
 <script>
 export default {
-
+    props: {
+        size: {
+            type: Number,
+            default: 10
+        }
+    }
 }
 </script>
 
 <style scoped>
     .container-dot {
-        margin: 0 5px;
+        margin: 0;
         display: inline-block;
     }
 

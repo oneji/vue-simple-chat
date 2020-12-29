@@ -1,4 +1,4 @@
-import { login, fetchUser } from '@/services/auth'
+import { login, fetchUser, changeStatus } from '@/services/auth'
 import * as mutationTypes from './mutation-types'
 
 export default {
@@ -19,6 +19,8 @@ export default {
         try {
             commit(mutationTypes.SET_AUTH_LOADING, true);
             let { data } = await login(credentials);
+
+            // let response = await changeStatus('online');
 
             commit(mutationTypes.AUTH_SUCCESS, data);
         } catch (err) {

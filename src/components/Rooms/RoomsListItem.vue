@@ -19,7 +19,12 @@
             <span class="last-message__time">{{ item.lastMessage.createdAt | moment('H:mm') }}</span>
         </h6>
         <p class="mb-0" style="font-size: 12px">
-            {{ item.lastMessage.body }}
+            <user-typing-icon
+                :size="8"
+                v-if="typing">
+            </user-typing-icon>
+            <span v-else>{{ item.lastMessage.body }}</span>
+
             <b-badge variant="success" pill v-if="item.unreadMessages > 0" class="unread-messages-counter">
                 {{ item.unreadMessages }}
             </b-badge>
@@ -30,12 +35,31 @@
 <script>
 import { mapState } from 'vuex'
 import config from '@/config'
+import UserTypingIcon from '../UserTypingIcon'
 
 export default {
     props: {
         item: {
-            type: Object
+            type: Object,
         }
+    },
+    data() {
+        return {
+            typing: false
+        }
+    },
+    sockets: {
+        userTyping(data) {
+            if(this.item._id === data.room) {
+                this.typing = true;
+            }
+        },
+        stoppedTyping(data) {
+            this.typing = false;
+        }
+    },
+    components: {
+        UserTypingIcon
     },
     computed: {
         ...mapState('auth', {

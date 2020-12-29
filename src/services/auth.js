@@ -16,3 +16,9 @@ export function fetchUser() {
         baseURL: config.apiURL
     });
 }
+
+export function changeStatus(status) {
+    return axios.post('users/changeStatus', {
+        status: status
+    });
+}
