@@ -1,12 +1,4 @@
 <template>
-    <div class="users-list">
-        <!-- <users-list-item
-            v-for="user in items"
-            :key="user._id"
-            :item="user"
-            @start-chat="startChat">
-        </users-list-item> -->
-
     <b-list-group>
         <b-list-group-item
             href="#"
@@ -19,7 +11,6 @@
             </users-list-item>
         </b-list-group-item>
     </b-list-group>
-    </div>
 </template>
 
 <script>
@@ -44,7 +35,5 @@ export default {
 </script>
 
 <style scoped>
-    .users-list {
-        padding: 10px;
-    }
+
 </style>

@@ -65,6 +65,10 @@ export default {
         commit(mutationTypes.PUSH_NEW_MESSAGE, message);
     },
 
+    'SOCKET_userChangeStatus' ({ commit }, data) {
+        commit(mutationTypes.USER_CHANGE_STATUS, data);
+    },
+
     async markMessageAsRead({ commit }, messageId) {
         try {
             let { data } = await markMessageAsRead(messageId);

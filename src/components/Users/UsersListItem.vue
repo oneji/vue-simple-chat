@@ -1,12 +1,4 @@
 <template>
-    <!-- <b-button
-        size="sm"
-        variant="success"
-        class="mr-2"
-        @click="startChat">
-        {{ item.fullName }}
-    </b-button> -->
-
     <b-media>
         <template #aside>
             <b-img
@@ -19,6 +11,7 @@
         </template>
 
         <h6 class="mt-0 mb-0">{{ item.fullName }}</h6>
+        <p class="mb-0" style="font-size: 12px">Онлайн</p>
     </b-media>
 </template>
 

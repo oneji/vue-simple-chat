@@ -134,7 +134,7 @@ export default {
         align-items: center;
     }
 
-    .messages-box ul {
+    .messages-box > div {
         padding: 0 20px;
         list-style-type: none;
     }

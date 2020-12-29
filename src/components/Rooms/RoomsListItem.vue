@@ -1,13 +1,17 @@
 <template>
     <b-media class="w-100">
         <template #aside>
-            <b-img
-                :src="getUsersPhoto"
-                width="40"
-                height="40"
-                :alt="filteredRoomUser.fullName"
-                rounded="circle">
-            </b-img>
+            <div class="user-avatar-wrapper">
+                <b-img
+                    :src="getUsersPhoto"
+                    width="40"
+                    height="40"
+                    :alt="filteredRoomUser.fullName"
+                    rounded="circle">
+                </b-img>
+
+                <div class="status" v-if="filteredRoomUser.status === 'online'"></div>
+            </div>
         </template>
 
         <h6 class="mt-0 mb-0">
@@ -54,5 +58,19 @@ export default {
     .last-message__time, .unread-messages-counter {
         float: right;
         font-size: 12px;
+    }
+
+    .user-avatar-wrapper {
+        position: relative;
+    }
+
+    .status {
+        width: 8px;
+        height: 8px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: #28a745;
+        border-radius: 50%;
     }
 </style>

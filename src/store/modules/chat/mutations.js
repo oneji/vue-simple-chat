@@ -58,5 +58,16 @@ export default {
                 }
             })
         });
+    },
+
+    [mutationTypes.USER_CHANGE_STATUS] (state, data) {
+        const { userId, status } = data;
+        state.rooms.map(room => {
+            room.users.map(user => {
+                if(user._id === userId) {
+                    user.status = status;
+                }
+            });
+        })
     }
 }

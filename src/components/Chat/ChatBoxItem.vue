@@ -43,7 +43,7 @@ export default {
 
     .message-out .message-time {
         color: #9e9e9e;
-        font-size: 12px;
+        font-size: 10px;
     }
 
     .message-in .message-body {
@@ -56,6 +56,6 @@ export default {
 
     .message-in .message-time {
         color: #9e9e9e;
-        font-size: 12px;
+        font-size: 10px;
     }
 </style>

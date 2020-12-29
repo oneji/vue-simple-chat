@@ -1,7 +1,7 @@
 <template>
     <div class="home" v-if="!contentLoading">
 
-        <b-modal id="startChatModal" title="Выберите контакт" :busy="true">
+        <b-modal id="startChatModal" title="Выберите контакт" hide-footer>
             <users-list
                 :items="users"
                 @start-chat="startChat">
