@@ -2,12 +2,14 @@ import { login, fetchUser, changeStatus } from '@/services/auth'
 import * as mutationTypes from './mutation-types'
 
 export default {
-    async fetchUser({ commit }) {
+    async fetchUser({ commit, state }) {
         try {
             commit('setContentLoading', true, { root: true });
             let { data } = await fetchUser();
 
             commit(mutationTypes.SET_USER, data.data);
+
+            await changeStatus('online');
         } catch (error) {
             console.log('err', error);
         } finally {
@@ -33,5 +35,15 @@ export default {
 
     logout({ commit }) {
         commit(mutationTypes.LOGOUT);
+    },
+
+    async changeStatus({ commit, state }, status) {
+        try {
+            let { data } = await changeStatus(status, state.user);
+
+            console.log(data);
+        } catch (error) {
+            console.log(error);
+        }
     }
 }

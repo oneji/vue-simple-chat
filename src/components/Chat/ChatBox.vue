@@ -4,7 +4,12 @@
             <template #header v-if="chat.fullName">
                 <h6 class="mb-0">
                     <span class="mr-2">{{ chat.fullName }}</span>
-
+                    <br>
+                    <span
+                        class="mr-2"
+                        style="font-size: 12px; color: #9B9CA3">
+                        {{ userStatus }}
+                    </span>
                     <user-typing-icon v-if="typing"></user-typing-icon>
                 </h6>
             </template>
@@ -18,7 +23,6 @@
                     </chat-box-item>
                 </div>
             </div>
-            
         </b-card>
 
         <message-input
@@ -51,6 +55,13 @@ export default {
             return {
                 fullName: ''
             }
+        },
+        userStatus() {
+            if(this.chat.status === 'online') {
+                return 'Онлайн'
+            }
+
+            return 'был(а) в сети ' + this.$moment(this.chat.lastSeenAt).from();
         }
     },
     sockets: {

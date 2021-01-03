@@ -17,7 +17,10 @@ export default {
     },
     components: {
         TheOverlay
-    }    
+    },
+    beforeDestroy() {
+        this.$store.dispatch('auth/changeStatus', 'offline');
+    },
 }
 </script>
 

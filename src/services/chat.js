@@ -1,4 +1,5 @@
 import axios from '@/axios'
+import config from '@/config'
 
 export function startChat(data) {
     return axios.post('rooms', data);
@@ -18,4 +19,11 @@ export function sendMessage(data) {
 
 export function markMessageAsRead(messageId) {
     return axios.post('messages/markAsRead', { id: messageId });
+}
+
+export function getOrderById(id) {
+    return axios({
+        url: `orders/getByIdFromChat/${id}`,
+        baseURL: config.apiURL
+    });
 }

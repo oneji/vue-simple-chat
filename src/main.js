@@ -15,7 +15,7 @@ Vue.use(IconsPlugin)
 Vue.use(VueMoment);
 
 Vue.use(new VueSocketIO({
-    debug: true,
+    debug: false,
     connection: io,
     vuex: {
         store,

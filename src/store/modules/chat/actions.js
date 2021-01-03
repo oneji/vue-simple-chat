@@ -4,7 +4,8 @@ import {
     getRooms,
     getRoomById,
     sendMessage,
-    markMessageAsRead
+    markMessageAsRead,
+    getOrderById
 } from '@/services/chat'
 
 export default {
@@ -84,5 +85,19 @@ export default {
         } catch (error) {
             console.log(error);
         }
+    },
+
+    getOrderById({ commit }, id) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let { data } = await getOrderById(id);
+
+                resolve(data);
+            } catch (error) {
+                console.log(error);
+
+                reject(error);
+            }
+        })
     }
 }
