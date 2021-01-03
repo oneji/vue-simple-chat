@@ -22,8 +22,6 @@ export default {
             commit(mutationTypes.SET_AUTH_LOADING, true);
             let { data } = await login(credentials);
 
-            // let response = await changeStatus('online');
-
             commit(mutationTypes.AUTH_SUCCESS, data);
         } catch (err) {
             let { data } = err.response;
@@ -33,7 +31,9 @@ export default {
         }
     },
 
-    logout({ commit }) {
+    async logout({ commit }) {
+        await changeStatus('offline');
+
         commit(mutationTypes.LOGOUT);
     },
 
