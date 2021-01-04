@@ -17,7 +17,6 @@ export default {
         localStorage.setItem('e2go_token', userData.token);
         // Set axios `Authorization` header
         axios.defaults.headers.common['Authorization'] = `Bearer ${userData.token}`;
-        axios.defaults.headers.common['User'] = `${userData.user.role}_${userData.user.id}`;
 
         router.push({ name: 'Home' })
     },
@@ -29,8 +28,6 @@ export default {
 
     [mutationTypes.SET_USER] (state, user) {
         state.user = user;
-
-        axios.defaults.headers.common['User'] = `${user.role}_${user.id}`;
     },
 
     [mutationTypes.LOGOUT] (state) {
