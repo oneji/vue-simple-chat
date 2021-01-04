@@ -19,7 +19,7 @@ instance.interceptors.response.use(function(response) {
 }, function(error) {
     if(error.response.status === 401) {
         const tokenErrorsArray = [ 'Token is expired', 'Token is invalid', 'Token not found' ];
-        const errorMessage = error.response.data.error;
+        const errorMessage = error.response.data.message;
 
         if(tokenErrorsArray.includes(errorMessage)) {
             localStorage.removeItem('e2go_token');
