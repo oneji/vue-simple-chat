@@ -11,7 +11,9 @@ export default {
     },
 
     [mutationTypes.ADD_MESSAGE] (state, message) {
-        state.currentChat.messages.push(message);
+        state.currentChat.messages.map(m => {
+            if(m.date === message.date) m.items.push(message.item);
+        })
 
         state.rooms.map(room => {
             if(room._id === message.room) {
@@ -27,15 +29,17 @@ export default {
 
     [mutationTypes.PUSH_NEW_MESSAGE] (state, message) {
         state.rooms.map(room => {
-            if(room._id === message.room) {
-                room.messages.push(message);
-                room.lastMessage = message;
+            if(room._id === message.item.room) {
+                room.messages.push(message.item);
+                room.lastMessage = message.item;
                 room.unreadMessages++;
             }
         })
 
-        if(message.room === state.currentChat._id) {
-            state.currentChat.messages.push(message);
+        if(message.item.room === state.currentChat._id) {
+            state.currentChat.messages.map(m => {
+                if(m.date === message.date) m.items.push(message.item);
+            })
         }
     },
 
@@ -75,5 +79,13 @@ export default {
                 }
             });
         })
+        
+        if(state.currentChat.users) {
+            state.currentChat.users.map(user => {
+                if(user._id === userId) {
+                    user.status = status;
+                }
+            });
+        }
     }
 }

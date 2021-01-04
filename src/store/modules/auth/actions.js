@@ -8,7 +8,7 @@ export default {
             let { data } = await fetchUser();
 
             commit(mutationTypes.SET_USER, data.data);
-
+            
             await changeStatus('online');
         } catch (error) {
             console.log('err', error);
@@ -21,8 +21,9 @@ export default {
         try {
             commit(mutationTypes.SET_AUTH_LOADING, true);
             let { data } = await login(credentials);
-
             commit(mutationTypes.AUTH_SUCCESS, data);
+
+            await changeStatus('online');
         } catch (err) {
             let { data } = err.response;
             commit(mutationTypes.AUTH_FAILED, data.message);

@@ -67,6 +67,20 @@ export default {
 </script>
 
 <style scoped>
+    .message-out {
+        margin: 5px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+    
+    .message-in {
+        margin: 5px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
     .message-out .message-body {
         padding: 10px 15px;
         background-color: #48b0f7;
@@ -83,11 +97,12 @@ export default {
 
     .message-in .message-body {
         padding: 10px 15px;
-        background-color: rgba(85,110,230,.1);
+        background-color: #F3F6F8;
         color: #000;
         border-radius: 5px;
         font-size: 13px;
         box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 1px -2px, rgba(0, 0, 0, 0.14) 0px 2px 2px 0px, rgba(0, 0, 0, 0.12) 0px 1px 5px 0px;
+        position: relative;
     }
 
     .message-in .message-time {

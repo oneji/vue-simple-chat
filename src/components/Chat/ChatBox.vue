@@ -2,25 +2,39 @@
     <b-overlay :show="loading" rounded="sm">
         <b-card header-tag="header" style="box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2),0 2px 2px 0 rgba(0, 0, 0, .14),0 1px 5px 0 rgba(0, 0, 0, .12)">
             <template #header v-if="chat.fullName">
-                <h6 class="mb-0">
-                    <span class="mr-2">{{ chat.fullName }}</span>
-                    <br>
-                    <span
-                        class="mr-2"
-                        style="font-size: 12px; color: #9B9CA3">
-                        {{ userStatus }}
-                    </span>
-                    <user-typing-icon v-if="typing"></user-typing-icon>
-                </h6>
+                <b-media class="w-100">
+                    <template #aside>
+                        <div class="user-avatar-wrapper">
+                            <b-img
+                                :src="getUsersPhoto"
+                                width="40"
+                                height="40"
+                                alt="Фото"
+                                rounded="circle">
+                            </b-img>
+                        </div>
+                    </template>
+
+                    <h6 class="mt-0 mb-0">
+                        {{ chat.fullName }}
+                    </h6>
+                    <p class="mb-0" style="font-size: 12px; color: #9B9CA3">
+                        <user-typing-icon
+                            :size="8"
+                            v-if="typing">
+                        </user-typing-icon>
+                        <span v-else>{{ userStatus }}</span>
+                    </p>
+                </b-media>
             </template>
-            <div class="messages-box" v-if="currentChat" ref="messagesBox"> 
+            <div class="messages-box" v-if="currentChat" ref="messagesBox">
                 <div ref="messagesInnerBox">
                     <div class="no-messages" v-if="!currentChat.messages">Выберите чат в левой колонке чтобы начать диалог</div>
-                    <chat-box-item
-                        v-for="message in currentChat.messages" :key="message._id"
+                    <chat-box-date-item
+                        v-for="message in currentChat.messages" :key="message.date"
                         :item="message"
                         :observer="observer">
-                    </chat-box-item>
+                    </chat-box-date-item>
                 </div>
             </div>
         </b-card>
@@ -34,13 +48,14 @@
 
 <script>
 import { mapState } from 'vuex'
-import ChatBoxItem from './ChatBoxItem'
+import ChatBoxDateItem from './ChatBoxDateItem'
 import MessageInput from './MessageInput'
 import UserTypingIcon from '../UserTypingIcon'
+import config from '@/config'
 
 export default {
     components: {
-        ChatBoxItem,
+        ChatBoxDateItem,
         MessageInput,
         UserTypingIcon
     },
@@ -62,6 +77,12 @@ export default {
             }
 
             return 'был(а) в сети ' + this.$moment(this.chat.lastSeenAt).from();
+        },
+        storageURL() {
+            return config.storageURL;
+        },
+        getUsersPhoto() {
+            return this.chat.photo ? `${this.storageURL}/${this.chat.photo}` : require('@/assets/images/no-photo.png'); 
         }
     },
     sockets: {
@@ -77,7 +98,8 @@ export default {
     data() {
         return {
             observer: null,
-            typing: false
+            typing: false,
+            currentDate: null
         }
     },
     methods: {
@@ -87,9 +109,11 @@ export default {
                 body: message,
                 userId: this.user.id
             })
-            .then(data => {
-                this.$socket.emit('sendMessage', data);
-            });
+            .then(message => {
+                console.log(message)
+                this.$socket.emit('sendMessage', message);
+                this.scrollToBottom();
+            })
         },
         scrollToBottom() {
             const messagesBox = this.$refs.messagesBox;
@@ -106,6 +130,9 @@ export default {
                 const id = target.getAttribute('data-id');
                 const type = target.getAttribute('data-type');
                 const seen = Boolean(target.getAttribute('data-seen'));
+                const date = target.getAttribute('data-date');
+
+                this.currentDate = date;
 
                 if(type === 'in' && !seen) {
                     this.$store.dispatch('chat/markMessageAsRead', id);
@@ -115,6 +142,7 @@ export default {
         }
     },
     updated() {
+        console.log('object')
         this.scrollToBottom();
     },
     created() {
@@ -147,19 +175,5 @@ export default {
     .messages-box > div {
         padding: 0 20px;
         list-style-type: none;
-    }
-
-    .messages-box .message-out {
-        margin: 5px 0;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-    }
-    
-    .messages-box .message-in {
-        margin: 5px 0;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
     }
 </style>
