@@ -5,8 +5,8 @@ export function startChat(data) {
     return axios.post('rooms', data);
 }
 
-export function getRooms(userId) {
-    return axios.get(`rooms?user_id=${userId}`);
+export function getRooms({ userId, userRole }) {
+    return axios.get(`rooms?user_id=${userId}&user_role=${userRole}`);
 }
 
 export function getRoomById(id) {

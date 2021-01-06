@@ -1,15 +1,17 @@
 <template>
-    <b-input-group class="mt-3">
-        <b-form-input
+    <div class="message-input">
+        <!-- <a href="#" class="files-button action-btn">
+            <b-icon icon="image" color="#919191"></b-icon>
+        </a> -->
+        <input
+            type="text"
+            placeholder="Введите сообщение..."
             @keypress="onKeyPress"
             @keyup.enter="sendMessage"
             v-model="message">
-        </b-form-input>
 
-        <b-input-group-append>
-            <b-button variant="info" @click="sendMessage">Отправить</b-button>
-        </b-input-group-append>
-    </b-input-group>
+        <!-- <VueRecordAudio /> -->
+    </div>
 </template>
 
 <script>
@@ -62,6 +64,40 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+    .message-input {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        transition: .3s all ease;
+        justify-content: space-between;
+    }
 
+    .message-input input {
+        width: 100%;
+        border: none;
+        outline: none;
+        padding: 10px 20px;
+        border-radius: 20px;
+        font-size: 14px;
+    }
+
+    .message-input .action-btn {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: .3s all ease;
+        border-radius: 100%;
+    }
+
+    .message-input .action-btn:hover {
+        background-color: #ddd;
+    }
+
+    .vue-audio-recorder {
+        width: 40px;
+        height: 40px;
+    }
 </style>

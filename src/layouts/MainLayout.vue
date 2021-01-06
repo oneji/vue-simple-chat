@@ -1,11 +1,7 @@
 <template>
-    <div>
-        <the-nav-bar></the-nav-bar>
-        
-        <b-container class="pt-4">
-            <router-view />
-        </b-container>
-    </div>
+    <b-container fluid>
+        <router-view />
+    </b-container>
 </template>
 
 <script>

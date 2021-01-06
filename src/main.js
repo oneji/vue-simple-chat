@@ -3,20 +3,19 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import VueSocketIO from 'vue-socket.io'
-import io from './config/socket'
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import VueMoment from 'vue-moment'
+import io from './config/socket'
 import moment from 'moment'
-require('moment/locale/ru')
 
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
+require('moment/locale/ru')
+
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
-Vue.use(VueMoment, {
-    moment
-});
+Vue.use(VueMoment, { moment });
 
 Vue.use(new VueSocketIO({
     debug: true,

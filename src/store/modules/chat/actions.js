@@ -27,7 +27,11 @@ export default {
     async getRooms({ commit, rootState }) {
         try {
             let userId = rootState.auth.user.id;
-            let { data } = await getRooms(userId);
+            let userRole = rootState.auth.user.role;
+            let { data } = await getRooms({
+                userId,
+                userRole
+            });
 
             commit(mutationTypes.SET_ROOMS, data.data);
         } catch (error) {
@@ -75,6 +79,14 @@ export default {
 
     'SOCKET_newRoom' ({ commit }, room) {
         commit(mutationTypes.PUSH_ROOM, room);
+    },
+
+    'SOCKET_userTyping' ({ commit }, data) {
+        commit(mutationTypes.SET_TYPING, data.room);
+    },
+
+    'SOCKET_stoppedTyping' ({ commit }) {
+        commit(mutationTypes.SET_TYPING, null);
     },
 
     async markMessageAsRead({ commit }, messageId) {

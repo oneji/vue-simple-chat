@@ -3,7 +3,9 @@
         <b-col sm="12" md="3" lg="3" xl="3">
             <b-overlay :show="loading" rounded="sm">
                 <b-card class="login-card">
-                    <h3 class="text-center">Войти</h3>
+                    <div class="user-img">
+                        <img src="@/assets/images/user.png" alt="">
+                    </div>
 
                     <b-alert :show="error" variant="danger">
                         {{ errorMessage }}
@@ -85,5 +87,16 @@ export default {
     .login-card {
         box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2),0 2px 2px 0 rgba(0, 0, 0, .14),0 1px 5px 0 rgba(0, 0, 0, .12);
         border: none;
+    }
+
+    .user-img {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .user-img img {
+        width: 100px;
+        display: block;
+        margin: 0 auto;
     }
 </style>

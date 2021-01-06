@@ -21,7 +21,7 @@
         <p class="mb-0" style="font-size: 12px">
             <user-typing-icon
                 :size="8"
-                v-if="typing">
+                v-if="this.item._id === typing">
             </user-typing-icon>
             <span v-else>{{ item.lastMessage.body }}</span>
 
@@ -43,21 +43,6 @@ export default {
             type: Object,
         }
     },
-    data() {
-        return {
-            typing: false
-        }
-    },
-    sockets: {
-        userTyping(data) {
-            if(this.item._id === data.room) {
-                this.typing = true;
-            }
-        },
-        stoppedTyping(data) {
-            this.typing = false;
-        }
-    },
     components: {
         UserTypingIcon
     },
@@ -65,6 +50,7 @@ export default {
         ...mapState('auth', {
             currentUser: 'user'
         }),
+        ...mapState('chat', [ 'typing' ]),
         storageURL() {
             return config.storageURL;
         },

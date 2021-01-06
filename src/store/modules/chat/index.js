@@ -7,7 +7,8 @@ const chatModule = {
     state: {
         currentChat: {},
         loading: false,
-        rooms: []
+        rooms: [],
+        typing: null
     },
 
     getters,

@@ -11,9 +11,16 @@ export default {
     },
 
     [mutationTypes.ADD_MESSAGE] (state, message) {
-        state.currentChat.messages.map(m => {
-            if(m.date === message.date) m.items.push(message.item);
-        })
+        if(state.currentChat.messages.length === 0) {
+            state.currentChat.messages.push({
+                date: message.date,
+                items: [message.item]
+            });
+        } else {
+            state.currentChat.messages.map(m => {
+                if(m.date === message.date) m.items.push(message.item);
+            })
+        }
 
         state.rooms.map(room => {
             if(room._id === message.room) {
@@ -87,5 +94,9 @@ export default {
                 }
             });
         }
+    },
+
+    [mutationTypes.SET_TYPING] (state, typing) {
+        state.typing = typing;
     }
 }

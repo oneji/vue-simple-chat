@@ -1,49 +1,74 @@
 <template>
-    <b-overlay :show="loading" rounded="sm">
-        <b-card header-tag="header" style="box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2),0 2px 2px 0 rgba(0, 0, 0, .14),0 1px 5px 0 rgba(0, 0, 0, .12)">
-            <template #header v-if="chat.fullName">
-                <b-media class="w-100">
-                    <template #aside>
-                        <div class="user-avatar-wrapper">
-                            <b-img
-                                :src="getUsersPhoto"
-                                width="40"
-                                height="40"
-                                alt="Фото"
-                                rounded="circle">
-                            </b-img>
+    <div style="height: 100%; background-color: #e5ddd5;">
+        <div 
+            :style="`
+                height: 100%; 
+                display: flex; 
+                box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2),0 2px 2px 0 rgba(0, 0, 0, .14),0 1px 5px 0 rgba(0, 0, 0, .12); 
+                background-image: url(${require('@/assets/images/chat-bg.png')});
+                background-size: contain;
+                background-position: center;
+            `">
+            <b-card class="rooms-card" style="border-right: 0; height: 100%; border-radius: 0; min-width: 400px">
+                <template #header>
+                    <div class="header">
+                        <div class="username">
+                            <h6 class="mt-0 mb-0">{{ user.first_name + ' ' + user.last_name }}</h6>
+                            <p class="mb-0" style="font-size: 12px; color: #9B9CA3">Онлайн</p>
                         </div>
+
+                        <b-button
+                            size="sm"
+                            v-b-modal.startChatModal
+                            style="border-radius: 100%; width: 35px; height: 35px;"
+                        >
+                            <b-icon icon="chat-left-text"></b-icon>
+                        </b-button>
+                    </div>
+                </template>
+
+                <rooms-list
+                    :items="rooms"
+                    v-if="rooms.length > 0">
+                </rooms-list>
+
+                <rooms-list-skeleton :loading="roomsLoading"></rooms-list-skeleton>
+            </b-card>
+            
+            <b-overlay :show="loading" rounded="sm" style="flex-grow: 1">
+                <b-card header-tag="header" class="chat-card">
+                    <template #header v-if="chat.fullName">
+                        <h6 class="mt-0 mb-0">{{ chat.fullName }}</h6>
+                        <p class="mb-0" style="font-size: 12px; color: #9B9CA3">
+                            <user-typing-icon
+                                :size="8"
+                                v-if="currentChat._id === typing">
+                            </user-typing-icon>
+                            <span v-else>{{ userStatus }}</span>
+                        </p>
                     </template>
-
-                    <h6 class="mt-0 mb-0">
-                        {{ chat.fullName }}
-                    </h6>
-                    <p class="mb-0" style="font-size: 12px; color: #9B9CA3">
-                        <user-typing-icon
-                            :size="8"
-                            v-if="typing">
-                        </user-typing-icon>
-                        <span v-else>{{ userStatus }}</span>
-                    </p>
-                </b-media>
-            </template>
-            <div class="messages-box" v-if="currentChat" ref="messagesBox">
-                <div ref="messagesInnerBox">
-                    <div class="no-messages" v-if="!currentChat.messages">Выберите чат в левой колонке чтобы начать диалог</div>
-                    <chat-box-date-item
-                        v-for="message in currentChat.messages" :key="message.date"
-                        :item="message"
-                        :observer="observer">
-                    </chat-box-date-item>
-                </div>
-            </div>
-        </b-card>
-
-        <message-input
-            v-if="currentChat._id"
-            @send="sendMessage">
-        </message-input>
-    </b-overlay>
+                    
+                    <div class="messages-box" v-if="currentChat" ref="messagesBox">
+                        <div class="no-messages" v-if="!currentChat.messages">Выберите чат в левой колонке чтобы начать диалог</div>
+                        <div ref="messagesInnerBox">
+                            <chat-box-date-item
+                                v-for="message in currentChat.messages" :key="message.date"
+                                :item="message"
+                                :observer="observer">
+                            </chat-box-date-item>
+                        </div>
+                    </div>
+                    
+                    <template #footer v-if="chat.fullName">
+                        <message-input
+                            v-if="currentChat._id"
+                            @send="sendMessage">
+                        </message-input>
+                    </template>
+                </b-card>
+            </b-overlay>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -52,16 +77,21 @@ import ChatBoxDateItem from './ChatBoxDateItem'
 import MessageInput from './MessageInput'
 import UserTypingIcon from '../UserTypingIcon'
 import config from '@/config'
+import RoomsList from '@/components/Rooms/RoomsList';
+import RoomsListSkeleton from '@/components/Rooms/RoomsListSkeleton';
 
 export default {
     components: {
         ChatBoxDateItem,
         MessageInput,
-        UserTypingIcon
+        UserTypingIcon,
+        RoomsList,
+        RoomsListSkeleton,
     },
     computed: {
         ...mapState('chat', [ 'currentChat', 'loading' ]),
         ...mapState('auth', [ 'user' ]),
+        ...mapState('chat', [ 'rooms', 'typing' ]),
         chat() {
             if(this.currentChat.users) {
                 return this.currentChat.users.filter(user => user.uid !== this.user.id)[0];
@@ -77,29 +107,12 @@ export default {
             }
 
             return 'был(а) в сети ' + this.$moment(this.chat.lastSeenAt).from();
-        },
-        storageURL() {
-            return config.storageURL;
-        },
-        getUsersPhoto() {
-            return this.chat.photo ? `${this.storageURL}/${this.chat.photo}` : require('@/assets/images/no-photo.png'); 
-        }
-    },
-    sockets: {
-        userTyping(data) {
-            if(this.currentChat._id === data.room) {
-                this.typing = true;
-            }
-        },
-        stoppedTyping(data) {
-            this.typing = false;
         }
     },
     data() {
         return {
             observer: null,
-            typing: false,
-            currentDate: null
+            roomsLoading: true
         }
     },
     methods: {
@@ -107,10 +120,10 @@ export default {
             this.$store.dispatch('chat/sendMessage', {
                 roomId: this.currentChat._id,
                 body: message,
-                userId: this.user.id
+                userId: this.user.id,
+                orderId: null
             })
             .then(message => {
-                console.log(message)
                 this.$socket.emit('sendMessage', message);
                 this.scrollToBottom();
             })
@@ -132,8 +145,6 @@ export default {
                 const seen = Boolean(target.getAttribute('data-seen'));
                 const date = target.getAttribute('data-date');
 
-                this.currentDate = date;
-
                 if(type === 'in' && !seen) {
                     this.$store.dispatch('chat/markMessageAsRead', id);
                 }
@@ -142,7 +153,6 @@ export default {
         }
     },
     updated() {
-        console.log('object')
         this.scrollToBottom();
     },
     created() {
@@ -154,6 +164,15 @@ export default {
             }
         );
     },
+    mounted() {
+        this.$store.dispatch('chat/getRooms')
+            .then(() => {
+                this.roomsLoading = false;
+                this.$socket.emit('joinRoom', {
+                    rooms: this.rooms.map(room => room._id)
+                });
+            });
+    },
     beforeDestroy() {
         this.observer.disconnect();
     },
@@ -162,7 +181,7 @@ export default {
 
 <style scoped>
     .messages-box, .no-messages {
-        height: 500px;
+        height: 100%;
         overflow-y: auto;
     }
 
@@ -175,5 +194,28 @@ export default {
     .messages-box > div {
         padding: 0 20px;
         list-style-type: none;
+        background-size: contain;
+        background-position: center;
+        /* opacity: 0.06; */
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .chat-card {
+        height: 100%;
+        border-radius: 0;
+    }
+    
+    .chat-card > .card-body {
+        padding: 0;
+        background-color: #EBEBEB;
+    }
+    
+    .rooms-card > .card-body {
+        padding: 0;
     }
 </style>
