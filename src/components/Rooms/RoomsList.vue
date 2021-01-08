@@ -50,6 +50,7 @@ export default {
     .rooms-list {
         padding: 0;
         list-style-type: none;
+        margin-bottom: 0;
     }
 
     .rooms-list li {

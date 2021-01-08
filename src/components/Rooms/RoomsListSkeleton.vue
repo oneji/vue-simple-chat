@@ -1,7 +1,6 @@
 <template>
-    <b-list-group v-if="loading">
-        <b-list-group-item
-            href="#"
+    <ul class="rooms-list" v-if="loading">
+        <li
             class="message-wrapper"
             v-for="i in 4" :key="i"
         >
@@ -15,8 +14,8 @@
                     <b-skeleton width="50%"></b-skeleton>
                 </b-media>
             </b-skeleton-wrapper>
-        </b-list-group-item>
-    </b-list-group>
+        </li>
+    </ul>
 </template>
 
 <script>
@@ -30,6 +29,16 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+    .rooms-list {
+        padding: 0;
+        list-style-type: none;
+        margin-bottom: 0;
+    }
 
+    .rooms-list li {
+        padding: 15px 20px;
+        transition: .3s all ease;
+        border-bottom: 1px solid #EBEBEB;
+    }
 </style>

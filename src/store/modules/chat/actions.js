@@ -69,26 +69,6 @@ export default {
         })
     },
 
-    'SOCKET_newMessage' ({ commit }, message) {
-        commit(mutationTypes.PUSH_NEW_MESSAGE, message);
-    },
-
-    'SOCKET_userChangeStatus' ({ commit }, data) {
-        commit(mutationTypes.USER_CHANGE_STATUS, data);
-    },
-
-    'SOCKET_newRoom' ({ commit }, room) {
-        commit(mutationTypes.PUSH_ROOM, room);
-    },
-
-    'SOCKET_userTyping' ({ commit }, data) {
-        commit(mutationTypes.SET_TYPING, data.room);
-    },
-
-    'SOCKET_stoppedTyping' ({ commit }) {
-        commit(mutationTypes.SET_TYPING, null);
-    },
-
     async markMessageAsRead({ commit }, messageId) {
         try {
             let { data } = await markMessageAsRead(messageId);
@@ -111,5 +91,25 @@ export default {
                 reject(error);
             }
         })
-    }
+    },
+
+    'SOCKET_newMessage' ({ commit }, message) {
+        commit(mutationTypes.PUSH_NEW_MESSAGE, message);
+    },
+
+    'SOCKET_userChangeStatus' ({ commit }, data) {
+        commit(mutationTypes.USER_CHANGE_STATUS, data);
+    },
+
+    'SOCKET_newRoom' ({ commit }, room) {
+        commit(mutationTypes.PUSH_ROOM, room);
+    },
+
+    'SOCKET_userTyping' ({ commit }, data) {
+        commit(mutationTypes.SET_TYPING, data.room);
+    },
+
+    'SOCKET_stoppedTyping' ({ commit }) {
+        commit(mutationTypes.SET_TYPING, null);
+    },
 }
