@@ -120,8 +120,8 @@ export default {
             this.$store.dispatch('chat/sendMessage', {
                 roomId: this.currentChat._id,
                 body: message,
-                userId: this.user.id,
-                orderId: null
+                orderId: null,
+                type: 'text'
             })
             .then(message => {
                 this.$socket.emit('sendMessage', message);

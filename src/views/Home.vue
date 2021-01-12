@@ -40,8 +40,7 @@ export default {
         startChat(userId) {
             this.$store.dispatch('chat/startChat', {
                 user: userId,
-                type: 'private',
-                currentUserId: this.user.id
+                type: 'private'
             }).then((room) => {
                 this.$socket.emit('joinRoom', {
                     rooms: [room._id]
