@@ -17,13 +17,20 @@
                             <p class="mb-0" style="font-size: 12px; color: #9B9CA3">Онлайн</p>
                         </div>
 
-                        <b-button
-                            size="sm"
-                            v-b-modal.startChatModal
-                            style="border-radius: 100%; width: 35px; height: 35px;"
-                        >
-                            <b-icon icon="chat-left-text"></b-icon>
-                        </b-button>
+                        <div>
+                            <b-button
+                                size="sm"
+                                v-b-modal.startChatModal
+                                style="border-radius: 100%; width: 35px; height: 35px;"
+                                class="mr-2"
+                            >
+                                <b-icon icon="chat-left-text"></b-icon>
+                            </b-button>
+
+                            <b-button size="sm" variant="primary" @click="$store.dispatch('auth/logout')">
+                                <b-icon icon="box-arrow-right" aria-hidden="true"></b-icon> Выйти
+                            </b-button>
+                        </div>
                     </div>
                 </template>
 
