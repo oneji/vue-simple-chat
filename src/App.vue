@@ -8,12 +8,13 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import TheOverlay from './components/TheOverlay'
 
 export default {
     computed: {
-        ...mapState([ 'contentLoading' ])
+        ...mapState([ 'contentLoading' ]),
+        ...mapGetters('chat', [ 'getUnreadMessagesCount' ])
     },
     components: {
         TheOverlay
@@ -21,6 +22,11 @@ export default {
     beforeDestroy() {
         this.$store.dispatch('auth/changeStatus', 'offline');
     },
+    watch: {
+        getUnreadMessagesCount() {
+            document.title =  `Чат (${this.getUnreadMessagesCount})`;
+        }
+    }
 }
 </script>
 
