@@ -5,6 +5,7 @@ import {
     getRoomById,
     sendMessage,
     markMessageAsRead,
+    markOneMessageAsRead,
     getOrderById
 } from '@/services/chat'
 
@@ -72,6 +73,16 @@ export default {
     async markMessageAsRead({ commit }, messageId) {
         try {
             let { data } = await markMessageAsRead(messageId);
+
+            commit(mutationTypes.MARK_MESSAGE_AS_READ, data.data);
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    
+    async markOneMessageAsRead({ commit }, messageId) {
+        try {
+            let { data } = await markOneMessageAsRead(messageId);
 
             commit(mutationTypes.MARK_MESSAGE_AS_READ, data.data);
         } catch (error) {

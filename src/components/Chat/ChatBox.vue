@@ -153,7 +153,7 @@ export default {
                 const date = target.getAttribute('data-date');
 
                 if(type === 'in' && !seen) {
-                    this.$store.dispatch('chat/markMessageAsRead', id);
+                    this.$store.dispatch('chat/markOneMessageAsRead', id);
                 }
 
             });

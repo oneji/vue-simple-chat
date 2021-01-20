@@ -21,6 +21,10 @@ export function markMessageAsRead(messageId) {
     return axios.post('messages/markAsRead', { id: messageId });
 }
 
+export function markOneMessageAsRead(messageId) {
+    return axios.post('messages/markOneAsRead', { id: messageId });
+}
+
 export function getOrderById(id) {
     return axios({
         url: `orders/getByIdFromChat/${id}`,
